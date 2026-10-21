@@ -9,20 +9,44 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+/**
+ * Testes unitários (JUnit 5) da classe {@link Calculadora}.
+ *
+ * <p>Cada cenário é executado pelo método {@link #verificar} que imprime a
+ * <b>entrada utilizada</b>, o <b>resultado esperado</b> e o <b>resultado
+ * obtido</b> antes de compará-los. A ordem de execução segue o enunciado da
+ * atividade (soma, subtração, multiplicação, divisão, divisão por zero e
+ * operação inválida), seguida de testes complementares de robustez.</p>
+ *
+ * @author Nycolas Ribeiro Almeida Bertocco
+ * @version 2.0
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TesteCalculadora {
 
+    /** Mensagem esperada quando há divisão por zero (texto literal, independente da classe testada). */
     private static final String ERRO_DIVISAO_POR_ZERO = "Erro: divisão por zero não é permitida.";
+    /** Mensagem esperada quando o operador é inválido ou nulo. */
     private static final String ERRO_OPERACAO_INVALIDA = "Erro: operação inválida. Use +, -, * ou /.";
 
+    /** Instância da classe testada, recriada antes de cada teste. */
     private Calculadora calculadora;
 
+    /** Cria uma nova {@link Calculadora} antes de cada teste, garantindo testes independentes. */
     @BeforeEach
     void criarCalculadora() {
         calculadora = new Calculadora();
     }
 
-    // Executa a operação, mostra entrada / esperado / obtido e compara os resultados
+    /**
+     * Executa a operação, mostra entrada / esperado / obtido e compara os resultados.
+     *
+     * @param cenario nome do cenário, usado apenas na mensagem impressa
+     * @param a       primeiro operando
+     * @param b       segundo operando
+     * @param op      operador (pode ser {@code null})
+     * @param esperado resultado esperado da chamada a {@link Calculadora#calc}
+     */
     private void verificar(String cenario, int a, int b, String op, String esperado) {
         String obtido = calculadora.calc(a, b, op);
         String situacao = esperado.equals(obtido) ? "PASSOU" : "FALHOU";
@@ -31,8 +55,9 @@ public class TesteCalculadora {
         assertEquals(esperado, obtido);
     }
 
-    // ---------- Testes obrigatórios ----------
+    // ---------- Testes obrigatórios (enunciado) ----------
 
+    /** Soma de inteiros positivos, com número negativo e com zeros. */
     @Test
     @DisplayName("Soma")
     @Order(1)
@@ -42,6 +67,7 @@ public class TesteCalculadora {
         verificar("SOMA", 0, 0, "+", "0");
     }
 
+    /** Subtração com resultado positivo, negativo e nulo. */
     @Test
     @DisplayName("Subtração")
     @Order(2)
@@ -51,6 +77,7 @@ public class TesteCalculadora {
         verificar("SUBTRAÇÃO", 7, 7, "-", "0");
     }
 
+    /** Multiplicação de inteiros positivos, com número negativo e com zero. */
     @Test
     @DisplayName("Multiplicação")
     @Order(3)
@@ -60,6 +87,7 @@ public class TesteCalculadora {
         verificar("MULTIPLICAÇÃO", 9, 0, "*", "0");
     }
 
+    /** Divisão exata, com casas decimais, com arredondamento e com dividendo zero. */
     @Test
     @DisplayName("Divisão")
     @Order(4)
@@ -70,6 +98,7 @@ public class TesteCalculadora {
         verificar("DIVISÃO", 0, 5, "/", "0");
     }
 
+    /** Divisão por zero deve devolver mensagem de erro, sem lançar exceção. */
     @Test
     @DisplayName("Divisão por zero")
     @Order(5)
@@ -78,6 +107,7 @@ public class TesteCalculadora {
         verificar("DIVISÃO POR ZERO", 0, 0, "/", ERRO_DIVISAO_POR_ZERO);
     }
 
+    /** Operadores desconhecidos ou vazios devem devolver mensagem de erro. */
     @Test
     @DisplayName("Operação inválida")
     @Order(6)
@@ -89,6 +119,7 @@ public class TesteCalculadora {
 
     // ---------- Testes complementares (robustez) ----------
 
+    /** Operador nulo não deve causar NullPointerException. */
     @Test
     @DisplayName("Operador nulo não interrompe a execução")
     @Order(7)
@@ -96,6 +127,7 @@ public class TesteCalculadora {
         verificar("OPERADOR NULO", 5, 3, null, ERRO_OPERACAO_INVALIDA);
     }
 
+    /** Espaços ao redor do operador devem ser ignorados. */
     @Test
     @DisplayName("Operador com espaços ao redor é aceito")
     @Order(8)
@@ -103,6 +135,7 @@ public class TesteCalculadora {
         verificar("OPERADOR COM ESPAÇOS", 8, 5, " + ", "13");
     }
 
+    /** Resultados acima de Integer.MAX_VALUE (ou abaixo de MIN_VALUE) não devem estourar. */
     @Test
     @DisplayName("Resultados fora do intervalo de int não estouram")
     @Order(9)
