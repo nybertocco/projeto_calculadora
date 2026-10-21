@@ -48,6 +48,14 @@ public class Calculadora {
     private static final int CASAS_DECIMAIS_DIVISAO = 2;
 
     /**
+     * Cria uma calculadora. A classe não possui estado interno, portanto uma
+     * mesma instância pode ser reutilizada em quantas operações forem necessárias.
+     */
+    public Calculadora() {
+        // Nenhuma inicialização necessária
+    }
+
+    /**
      * Realiza a operação matemática indicada entre dois números inteiros.
      *
      * <p>Regras de funcionamento:</p>
