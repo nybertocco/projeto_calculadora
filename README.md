@@ -12,7 +12,7 @@
 **RA:** 251191  
 **Curso:** Análise e Desenvolvimento de Sistemas  
 **Disciplina:** UX/UI e Testes de Software  
-**Professor:** Dr. Ohata  
+**Professor:** Daniel Ohata  
 **Semestre:** 2026.2  
 **Repositório:** [github.com/nybertocco/projeto_calculadora](https://github.com/nybertocco/projeto_calculadora)
 
@@ -84,12 +84,12 @@ A aplicação oferece as seguintes operações:
 
 | ID   | Funcionalidade       | Descrição                        | Status |
 | ---- | -------------------- | -------------------------------- | ------ |
-| RF01 | Soma                 | Soma dois números inteiros       | ✅      |
-| RF02 | Subtração            | Subtrai dois números inteiros    | ✅      |
-| RF03 | Multiplicação        | Multiplica dois números inteiros | ✅      |
-| RF04 | Divisão              | Divide dois números inteiros     | ✅      |
-| RF05 | Validação de divisão | Impede divisão por zero          | ✅      |
-| RF06 | Operação inválida    | Trata operadores não suportados  | ✅      |
+| RF01 | Soma                 | Soma dois números inteiros       | ✅     |
+| RF02 | Subtração            | Subtrai dois números inteiros    | ✅     |
+| RF03 | Multiplicação        | Multiplica dois números inteiros | ✅     |
+| RF04 | Divisão              | Divide dois números inteiros     | ✅     |
+| RF05 | Validação de divisão | Impede divisão por zero          | ✅     |
+| RF06 | Operação inválida    | Trata operadores não suportados  | ✅     |
 
 ---
 
@@ -108,14 +108,14 @@ A aplicação oferece as seguintes operações:
 
 # 7. Tecnologias Utilizadas
 
-| Tecnologia | Versão                      | Utilização                  |
-| ---------- | --------------------------- | --------------------------- |
-| Java       | 21 (compatível com 17+)     | Desenvolvimento             |
-| JDK        | OpenJDK 21                  | Compilação                  |
-| JUnit      | 5 (Jupiter)                 | Testes                      |
-| Git        | 2.43                        | Controle de versão          |
-| GitHub     | —                           | Repositório remoto          |
-| JavaDoc    | — (JDK 21)                  | Documentação                |
+| Tecnologia | Versão                                          | Utilização                                                                        |
+| ---------- | ----------------------------------------------- | --------------------------------------------------------------------------------- |
+| Java       | 21 (compatível com 17+)                         | Desenvolvimento                                                                   |
+| JDK        | OpenJDK 21                                      | Compilação                                                                        |
+| JUnit      | 5 (Jupiter)                                     | Testes                                                                            |
+| Git        | 2.43                                            | Controle de versão                                                                |
+| GitHub     | —                                               | Repositório remoto                                                                |
+| JavaDoc    | — (JDK 21)                                      | Documentação                                                                      |
 | IDE        | Linha de comando (JDK + JUnit Console Launcher) | Ambiente de desenvolvimento. O projeto também abre em Eclipse, IntelliJ e VS Code |
 
 ---
@@ -152,20 +152,20 @@ projeto_calculadora/
 
 O método `calc(int a, int b, String op)` recebe dois números inteiros e o operador, e devolve um `String` com o resultado **ou** uma mensagem de erro. Ele nunca lança exceção para quem o chamou.
 
-| Operador       | Operação          | Exemplo              | Resultado                                   |
-| -------------- | ----------------- | -------------------- | ------------------------------------------- |
-| `+`            | Soma              | `calc(8, 5, "+")`    | `13`                                        |
-| `-`            | Subtração         | `calc(4, 10, "-")`   | `-6`                                        |
-| `*`            | Multiplicação     | `calc(6, 7, "*")`    | `42`                                        |
-| `/`            | Divisão           | `calc(7, 2, "/")`    | `3.5`                                       |
-| `/`            | Divisão por zero  | `calc(10, 0, "/")`   | `Erro: divisão por zero não é permitida.`   |
-| outro ou `null`| Operação inválida | `calc(5, 3, "%")`    | `Erro: operação inválida. Use +, -, * ou /.`|
+| Operador        | Operação          | Exemplo            | Resultado                                    |
+| --------------- | ----------------- | ------------------ | -------------------------------------------- |
+| `+`             | Soma              | `calc(8, 5, "+")`  | `13`                                         |
+| `-`             | Subtração         | `calc(4, 10, "-")` | `-6`                                         |
+| `*`             | Multiplicação     | `calc(6, 7, "*")`  | `42`                                         |
+| `/`             | Divisão           | `calc(7, 2, "/")`  | `3.5`                                        |
+| `/`             | Divisão por zero  | `calc(10, 0, "/")` | `Erro: divisão por zero não é permitida.`    |
+| outro ou `null` | Operação inválida | `calc(5, 3, "%")`  | `Erro: operação inválida. Use +, -, * ou /.` |
 
 **Decisões de projeto**
 
 - **Divisão com casas decimais:** o resultado é arredondado para 2 casas (`HALF_UP`) e os zeros à direita são removidos: `20 / 4` → `5` e `10 / 3` → `3.33`. Como o app é financeiro, a divisão inteira (`10 / 3 = 3`) perderia informação.
 - **Sem estouro de `int`:** soma, subtração e multiplicação são calculadas com `long` (ex.: `Integer.MAX_VALUE + 1` → `2147483648`).
-- **Sem exceções para o chamador:** a divisão por zero e o operador `null` são verificados *antes* da conta, evitando `ArithmeticException` e `NullPointerException`. Espaços ao redor do operador são ignorados (`" + "` equivale a `"+"`).
+- **Sem exceções para o chamador:** a divisão por zero e o operador `null` são verificados _antes_ da conta, evitando `ArithmeticException` e `NullPointerException`. Espaços ao redor do operador são ignorados (`" + "` equivale a `"+"`).
 
 ---
 
@@ -173,17 +173,17 @@ O método `calc(int a, int b, String op)` recebe dois números inteiros e o oper
 
 A classe `TesteCalculadora` (JUnit 5) cobre os seis cenários obrigatórios e três testes complementares de robustez. **Cada teste imprime a entrada utilizada, o resultado esperado e o resultado obtido.**
 
-| Teste                    | Entrada (a, b, op)       | Esperado                                  |
-| ------------------------ | ------------------------ | ----------------------------------------- |
-| Soma                     | 8, 5, `+`                | `13`                                      |
-| Subtração                | 4, 10, `-`               | `-6`                                      |
-| Multiplicação            | 6, 7, `*`                | `42`                                      |
-| Divisão                  | 7, 2, `/`                | `3.5`                                     |
-| Divisão por zero         | 10, 0, `/`               | `Erro: divisão por zero não é permitida.` |
-| Operação inválida        | 5, 3, `%`                | `Erro: operação inválida. Use +, -, * ou /.` |
-| Operador nulo *(extra)*  | 5, 3, `null`             | `Erro: operação inválida. Use +, -, * ou /.` |
-| Espaços no operador *(extra)* | 8, 5, ` + `         | `13`                                      |
-| Sem estouro de `int` *(extra)* | `Integer.MAX_VALUE`, 1, `+` | `2147483648`                     |
+| Teste                          | Entrada (a, b, op)          | Esperado                                     |
+| ------------------------------ | --------------------------- | -------------------------------------------- |
+| Soma                           | 8, 5, `+`                   | `13`                                         |
+| Subtração                      | 4, 10, `-`                  | `-6`                                         |
+| Multiplicação                  | 6, 7, `*`                   | `42`                                         |
+| Divisão                        | 7, 2, `/`                   | `3.5`                                        |
+| Divisão por zero               | 10, 0, `/`                  | `Erro: divisão por zero não é permitida.`    |
+| Operação inválida              | 5, 3, `%`                   | `Erro: operação inválida. Use +, -, * ou /.` |
+| Operador nulo _(extra)_        | 5, 3, `null`                | `Erro: operação inválida. Use +, -, * ou /.` |
+| Espaços no operador _(extra)_  | 8, 5, `+`                   | `13`                                         |
+| Sem estouro de `int` _(extra)_ | `Integer.MAX_VALUE`, 1, `+` | `2147483648`                                 |
 
 Cada teste executa mais de uma entrada (por exemplo, a soma é verificada com positivos, com um número negativo e com zeros), totalizando 23 verificações.
 
@@ -197,12 +197,12 @@ Cada teste executa mais de uma entrada (por exemplo, a soma é verificada com po
 
 A refatoração foi feita na branch **`Refatoracao`**, em dois commits, sem alterar o comportamento nem os testes.
 
-| Técnica aplicada              | Antes                                   | Depois                                                                                       |
-| ----------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Extração de métodos           | Toda a lógica dentro de `calc`          | Um método privado por operação (`somar`, `subtrair`, `multiplicar`, `dividir`) e `formatar` |
-| Simplificação de condicionais | `if / else` aninhado em vários níveis   | `switch` com retornos diretos                                                                |
-| Constantes                    | Textos e símbolos repetidos no código   | `SOMA`, `SUBTRACAO`, `MULTIPLICACAO`, `DIVISAO`, `MSG_DIVISAO_POR_ZERO`, `MSG_OPERACAO_INVALIDA`, `CASAS_DECIMAIS_DIVISAO` |
-| Nomes de variáveis            | `r`, `x`                                | `soma`, `diferenca`, `produto`, `quociente`, `dividendo`, `divisor`                          |
+| Técnica aplicada              | Antes                                 | Depois                                                                                                                     |
+| ----------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Extração de métodos           | Toda a lógica dentro de `calc`        | Um método privado por operação (`somar`, `subtrair`, `multiplicar`, `dividir`) e `formatar`                                |
+| Simplificação de condicionais | `if / else` aninhado em vários níveis | `switch` com retornos diretos                                                                                              |
+| Constantes                    | Textos e símbolos repetidos no código | `SOMA`, `SUBTRACAO`, `MULTIPLICACAO`, `DIVISAO`, `MSG_DIVISAO_POR_ZERO`, `MSG_OPERACAO_INVALIDA`, `CASAS_DECIMAIS_DIVISAO` |
+| Nomes de variáveis            | `r`, `x`                              | `soma`, `diferenca`, `produto`, `quociente`, `dividendo`, `divisor`                                                        |
 
 A assinatura pública exigida pelo enunciado foi mantida: `calc(int a, int b, String op)`.
 
